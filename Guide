@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setup Guide — Toggle × OpenClaw</title>
+<meta name="description" content="Get the most out of Toggle with OpenClaw. Choose your setup and start getting context-aware agent intelligence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0A0A0A;
+    --surface: #111111;
+    --surface-2: #161616;
+    --surface-3: #1C1C1C;
+    --border: #222222;
+    --border-accent: #333333;
+    --text: #F0F0F0;
+    --text-2: #999999;
+    --text-3: #555555;
+    --mint: #00FFB2;
+    --mint-15: rgba(0, 255, 178, 0.15);
+    --mint-08: rgba(0, 255, 178, 0.08);
+    --mint-04: rgba(0, 255, 178, 0.04);
+    --red: #FF4444;
+    --red-10: rgba(255, 68, 68, 0.1);
+    --amber: #FFAA00;
+    --blue: #648CFF;
+    --font-body: 'Sora', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  a { color: inherit; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 32px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .logo-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .logo-label span { color: var(--text-3); font-weight: 400; }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .nav-link {
+    font-size: 13px;
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .nav-link:hover { color: var(--text); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+
+  .btn-mint { background: var(--mint); color: #0A0A0A; }
+  .btn-mint:hover { filter: brightness(0.9); }
+  .btn-ghost { background: transparent; border: 1px solid var(--border-accent); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--text-3); }
+
+  /* ── HEADER ── */
+  .page-header {
+    padding: 120px 0 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-header h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .page-header p {
+    font-size: 16px;
+    color: var(--text-2);
+    line-height: 1.6;
+    max-width: 560px;
+  }
+
+  /* ── PREREQS ── */
+  .prereqs {
+    padding: 60px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .prereqs h2 {
+    font-size: 14px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 24px;
+  }
+
+  .prereq-steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .prereq-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+  }
+
+  .prereq-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--mint);
+    margin-bottom: 12px;
+  }
+
+  .prereq-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .prereq-card p {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.6;
+  }
+
+  .prereq-card a {
+    color: var(--mint);
+    text-decoration: none;
+  }
+
+  .prereq-card code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--surface-2);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--amber);
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+  }
+
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 10px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .copy-btn:hover {
+    border-color: var(--mint);
+    color: var(--mint);
+  }
+
+  .copy-btn[data-copied="true"] {
+    border-color: var(--mint);
+    color: var(--mint);
+  }
+
+  .copy-btn[data-copied="true"]::after {
+    content: none;
+  }
+
+  .example-msg {
+    background: var(--surface-2);
+    border-left: 2px solid var(--mint);
+    padding: 14px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.6;
+    position: relative;
+  }
+
+  .example-msg .copy-btn,
+  .combo-prompt-msg .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .code-body {
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text-2);
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .code-body .key { color: var(--mint); }
+  .code-body .val { color: var(--amber); }
+  .code-body .comment { color: var(--text-3); }
+
+  /* ── MODE TOGGLE ── */
+  .mode-toggle {
+    display: inline-flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 24px;
+  }
+
+  .mode-btn {
+    padding: 10px 24px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-3);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-right: 1px solid var(--border);
+    letter-spacing: 0.03em;
+  }
+
+  .mode-btn:last-child { border-right: none; }
+
+  .mode-btn:hover { color: var(--text-2); }
+
+  .mode-btn.active {
+    background: var(--mint-08);
+    color: var(--mint);
+  }
+
+  .mode-content { display: none; }
+  .mode-content.visible { display: block; }
+
+  /* ── SETUP PICKER ── */
+  .picker {
+    padding: 80px 0;
+  }
+
+  .picker-head {
+    margin-bottom: 48px;
+  }
+
+  .picker-head h2 {
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+  }
+
+  .picker-head p {
+    font-size: 14px;
+    color: var(--text-2);
+    line-height: 1.6;
+    max-width: 540px;
+  }
+
+  /* ── SETUP CARDS ── */
+  .setup-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .setup-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 28px 28px 0;
+  }
+
+  .setup-badge {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .setup-card-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .setup-card-header .subtitle {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.5;
+  }
+
+  .setup-tag {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .tag-recommended { background: var(--mint-08); color: var(--mint); }
+  .tag-optional { background: rgba(100,140,255,0.08); color: var(--blue); }
+  .tag-advanced { background: rgba(255,170,0,0.08); color: var(--amber); }
+
+  .setup-card-body {
+    padding: 20px 28px 28px;
+  }
+
+  .setup-what {
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--surface-2);
+    border-radius: 8px;
+  }
+
+  .setup-what-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+
+  .setup-what-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .setup-what-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.5;
+  }
+
+  .setup-what-item .check {
+    color: var(--mint);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .setup-example {
+    margin-top: 20px;
+  }
+
+  .setup-example-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+
+  .example-msg .you {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .example-msg .agent {
+    color: var(--mint);
+  }
+
+  .example-msg .dim { color: var(--text-3); }
+
+  .setup-command {
+    margin-top: 16px;
+  }
+
+  .setup-command-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+  }
+
+  .setup-or {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-3);
+    padding: 8px 0;
+  }
+
+  /* ── COMBOS ── */
+  .combos {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .combos h2 {
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+  }
+
+  .combos > .container > p {
+    font-size: 14px;
+    color: var(--text-2);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 540px;
+  }
+
+  .combo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .combo-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+  }
+
+  .combo-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .combo-card .combo-persona {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .combo-card p {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .combo-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .combo-feat {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--surface-2);
+    color: var(--text-2);
+    border: 1px solid var(--border);
+  }
+
+  .combo-feat.on {
+    background: var(--mint-08);
+    color: var(--mint);
+    border-color: rgba(0,255,178,0.15);
+  }
+
+  .combo-prompt {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .combo-prompt-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .combo-copy-hint {
+    font-size: 9px;
+    color: var(--text-3);
+    opacity: 0.6;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .combo-prompt-msg {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--mint);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+    position: relative;
+  }
+
+  .combo-prompt-msg:hover {
+    border-color: rgba(0,255,178,0.3);
+  }
+
+  /* ── SETTINGS REF ── */
+  .settings-ref {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .settings-ref h2 {
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+  }
+
+  .settings-ref > .container > p {
+    font-size: 14px;
+    color: var(--text-2);
+    margin-bottom: 32px;
+  }
+
+  .settings-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .settings-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .settings-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-2);
+    vertical-align: top;
+  }
+
+  .settings-table td:first-child {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--mint);
+    white-space: nowrap;
+  }
+
+  .settings-table td:nth-child(2) {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--amber);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px;
+  }
+
+  .footer-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-left {
+    font-size: 12px;
+    color: var(--text-3);
+    font-family: var(--font-mono);
+  }
+
+  .footer-links { display: flex; gap: 20px; }
+
+  .footer-links a {
+    font-size: 12px;
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-links a:hover { color: var(--text-2); }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .prereq-steps { grid-template-columns: 1fr; }
+    .combo-grid { grid-template-columns: 1fr; }
+    .container { padding: 0 20px; }
+    nav { padding: 0 20px; }
+    .nav-link { display: none; }
+    .settings-table { font-size: 12px; }
+    .settings-table td, .settings-table th { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="landing-v2.html" class="logo">
+    <svg width="24" height="24" viewBox="0 0 104 104" fill="none">
+      <rect x="4" width="96" height="96" rx="16" fill="#fff" fill-opacity="0.08"/>
+      <path d="M58.5498 22C58.6482 22 58.7312 22.0825 58.7314 22.1807V35C51.533 35 45.7023 40.8177 45.7021 48C45.7021 55.1825 51.5368 61 58.7314 61V73.8193C58.7314 73.9177 58.6484 74 58.5498 74H40.9277C37.9278 73.9998 35.5 71.5733 35.5 68.584V27.4248C35.5 24.4316 37.9318 22.008 40.9277 22.0078H58.5498V22ZM58.7314 38.2568C64.1243 38.2568 68.4998 42.6231 68.5 48.0039C68.5 53.3849 64.1245 57.751 58.7314 57.751C53.3384 57.751 48.9629 53.3849 48.9629 48.0039C48.9631 42.6231 53.3346 38.2568 58.7314 38.2568Z" fill="url(#logo-grad-s)"/>
+      <defs><linearGradient id="logo-grad-s" x1="52" y1="22" x2="52" y2="74" gradientUnits="userSpaceOnUse"><stop stop-color="#64AEFF"/><stop offset="1" stop-color="#007AFF"/></linearGradient></defs>
+    </svg>
+    <div class="logo-label">TOGGLEX <span>/ OPENCLAW</span></div>
+  </a>
+  <div class="nav-right">
+    <a href="landing-v2.html" class="nav-link">Landing Page</a>
+    <a href="#setups" class="nav-link">Setups</a>
+    <a href="#presets" class="nav-link">Presets</a>
+    <a href="#reference" class="nav-link">Reference</a>
+    <a href="https://x.toggle.pro" class="btn btn-mint" style="padding: 8px 18px; font-size: 12px;">Dashboard</a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<section class="page-header">
+  <div class="container">
+    <h1>Set up Toggle for<br>the way you work.</h1>
+    <p>Toggle can do a lot. This page walks you through each feature so you can turn on exactly what you want — from basic recall to full autopilot.</p>
+  </div>
+</section>
+
+<!-- PREREQUISITES -->
+<section class="prereqs">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <h2>Before you start</h2>
+      <div class="mode-toggle">
+        <button class="mode-btn active" onclick="setMode('chat')">Chat</button>
+        <button class="mode-btn" onclick="setMode('cli')">CLI</button>
+        <button class="mode-btn" onclick="setMode('manual')">Manual</button>
+      </div>
+    </div>
+    <div class="prereq-steps">
+      <div class="prereq-card">
+        <div class="prereq-num">01</div>
+        <h3>Get your API key</h3>
+        <p>Sign up at <a href="https://x.toggle.pro">x.toggle.pro</a>, install the Chrome extension, then go to <a href="https://x.toggle.pro/new/clawbot-integration">clawbot-integration</a> to generate your key.</p>
+      </div>
+      <div class="prereq-card">
+        <div class="prereq-num">02</div>
+        <h3>Add to OpenClaw config</h3>
+        <p>Add the key to your OpenClaw settings. Set it in your config file under <code>skills.entries.toggle.apiKey</code> or export it as <code>TOGGLE_API_KEY</code>.</p>
+      </div>
+      <div class="prereq-card">
+        <div class="prereq-num">03</div>
+        <h3>Install the skill</h3>
+        <p>Add the Toggle skill to your Claw. Once installed, say anything about your work and it'll fetch your context automatically.</p>
+      </div>
+    </div>
+
+    <div class="mode-content visible" data-mode="chat" style="margin-top:20px;">
+      <div class="example-msg"><button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+        <span class="you">You:</span> Set up the Toggle skill. My API key is [paste your key here]
+      </div>
+      <p style="font-size:12px;color:var(--text-3);margin-top:10px;">Your Claw will configure everything. Never paste your key in a public channel.</p>
+    </div>
+
+    <div class="mode-content" data-mode="cli" style="margin-top:20px;">
+      <div class="code-block">
+        <div class="code-header"><span>Terminal</span><span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></span></div>
+        <div class="code-body">export TOGGLE_API_KEY=<span class="val">your_key_here</span></div>
+      </div>
+    </div>
+
+    <div class="mode-content" data-mode="manual" style="margin-top:20px;">
+      <div class="code-block">
+        <div class="code-header">
+          <span>openclaw config</span>
+          <span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></span>
+        </div>
+        <div class="code-body">{
+  <span class="key">"skills"</span>: {
+    <span class="key">"entries"</span>: {
+      <span class="key">"toggle"</span>: {
+        <span class="key">"apiKey"</span>: <span class="val">"your_key_here"</span>
+      }
+    }
+  }
+}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SETUP PICKER -->
+<section class="picker" id="setups">
+  <div class="container">
+    <div class="picker-head">
+      <h2>Choose what to turn on.</h2>
+      <p>Each feature builds on the last. Start with what feels right and add more as you get comfortable.</p>
+      <div class="mode-toggle">
+        <button class="mode-btn active" onclick="setMode('chat')">Chat</button>
+        <button class="mode-btn" onclick="setMode('cli')">CLI</button>
+        <button class="mode-btn" onclick="setMode('manual')">Manual</button>
+      </div>
+    </div>
+
+    <!-- 1. RECALL -->
+    <div class="setup-card">
+      <div class="setup-card-header">
+        <div class="setup-badge" style="background:var(--mint-08);color:var(--mint);">01</div>
+        <div>
+          <h3>Instant Recall</h3>
+          <div class="subtitle">Ask your agent anything about your recent work and get a real answer.</div>
+        </div>
+        <span class="setup-tag tag-recommended">WORKS IMMEDIATELY</span>
+      </div>
+      <div class="setup-card-body">
+        <div class="setup-what">
+          <div class="setup-what-label">What it does</div>
+          <div class="setup-what-list">
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              "What was I working on?" — gets an answer based on actual browser activity, not memory
+            </div>
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              "Pick up where I left off" — finds your last deep work session and describes exactly where you stopped
+            </div>
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              "What did I do yesterday?" — full breakdown by project, time, and focus score
+            </div>
+          </div>
+        </div>
+        <div class="setup-example">
+          <div class="setup-example-label">Example conversation</div>
+          <div class="example-msg"><button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+            <span class="you">You:</span> Where did I leave off on the API project?<br><br>
+            <span class="agent">Claw:</span> <span class="dim">Tuesday afternoon (2:15–4:30 PM) you were deep in the Kalshi API docs — 1.5h across 3 sessions. Last session ended on the authentication endpoint. Focus: 87. Want me to pull up those docs?</span>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-3);margin-top:16px;">No setup needed beyond the API key. Just start asking.</p>
+      </div>
+    </div>
+
+    <!-- 2. AUTO-SYNC -->
+    <div class="setup-card">
+      <div class="setup-card-header">
+        <div class="setup-badge" style="background:var(--mint-08);color:var(--mint);">02</div>
+        <div>
+          <h3>Auto-Sync</h3>
+          <div class="subtitle">Background hourly sync so your agent always has fresh context — even without you asking.</div>
+        </div>
+        <span class="setup-tag tag-recommended">RECOMMENDED</span>
+      </div>
+      <div class="setup-card-body">
+        <div class="setup-what">
+          <div class="setup-what-label">What it does</div>
+          <div class="setup-what-list">
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Fetches your activity every hour and saves it to agent memory
+            </div>
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Enables multi-day history — your agent remembers last week, not just today
+            </div>
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Required for stale nudges, pattern detection, and predictions to work
+            </div>
+          </div>
+        </div>
+        <div class="setup-command">
+          <div class="mode-content visible" data-mode="chat">
+            <div class="setup-command-label">Tell your Claw</div>
+            <div class="example-msg"><button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+              <span class="you">You:</span> Set up hourly auto-sync for Toggle
+            </div>
+          </div>
+          <div class="mode-content" data-mode="cli">
+            <div class="setup-command-label">Run in terminal</div>
+            <div class="code-block">
+              <div class="code-header"><span>Terminal</span><span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></span></div>
+              <div class="code-body">openclaw cron create \
+  --name <span class="val">"Toggle hourly sync"</span> \
+  --schedule <span class="val">"0 * * * *"</span> \
+  --message <span class="val">"Run: python3 {baseDir}/scripts/toggle.py --persist {baseDir}/../../memory --skip-cron-check"</span></div>
+            </div>
+          </div>
+          <div class="mode-content" data-mode="manual">
+            <div class="setup-command-label">Add to cron jobs config</div>
+            <div class="code-block">
+              <div class="code-header"><span>~/.openclaw/cron/jobs.json</span><span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></span></div>
+              <div class="code-body">{
+  <span class="key">"name"</span>: <span class="val">"Toggle hourly sync"</span>,
+  <span class="key">"schedule"</span>: <span class="val">"0 * * * *"</span>,
+  <span class="key">"message"</span>: <span class="val">"Run: python3 {baseDir}/scripts/toggle.py --persist {baseDir}/../../memory --skip-cron-check"</span>
+}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. DAILY DIGEST -->
+    <div class="setup-card">
+      <div class="setup-card-header">
+        <div class="setup-badge" style="background:var(--mint-08);color:var(--mint);">03</div>
+        <div>
+          <h3>Daily Digest</h3>
+          <div class="subtitle">Automated end-of-day summary dropped into your DMs at 6 PM. No prompt.</div>
+        </div>
+        <span class="setup-tag tag-recommended">RECOMMENDED</span>
+      </div>
+      <div class="setup-card-body">
+        <div class="setup-what">
+          <div class="setup-what-label">What you get every day</div>
+          <div class="setup-what-list">
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Total work time, session count, and deepest focus area
+            </div>
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Open items you didn't finish — so nothing falls through the cracks
+            </div>
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Day-over-day comparison — focus trends, context switches, time spent
+            </div>
+          </div>
+        </div>
+        <div class="setup-example">
+          <div class="setup-example-label">What it looks like</div>
+          <div class="example-msg"><button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+            <span class="agent">Claw:</span> <span class="dim">Your day: 5.2h across 4 sessions. Deepest focus on auth migration (2.1h, 94 focus). Stripe webhooks still open — you were 80% through. Context switches down to 3 from 6 yesterday.</span>
+          </div>
+        </div>
+        <div class="setup-command">
+          <div class="mode-content visible" data-mode="chat">
+            <div class="setup-command-label">Tell your Claw</div>
+            <div class="example-msg"><button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+              <span class="you">You:</span> Set up a daily digest at 6 PM
+            </div>
+            <p style="font-size:12px;color:var(--text-3);margin-top:12px;">You can change the time anytime. Just say "change my digest to 8 PM."</p>
+          </div>
+          <div class="mode-content" data-mode="cli">
+            <div class="setup-command-label">Run in terminal</div>
+            <div class="code-block">
+              <div class="code-header"><span>Terminal</span><span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></span></div>
+              <div class="code-body">openclaw cron create \
+  --name <span class="val">"Toggle daily digest"</span> \
+  --schedule <span class="val">"0 18 * * *"</span> \
+  --message <span class="val">"Fetch today's Toggle data and generate my end-of-day digest. Run: python3 {baseDir}/scripts/toggle.py --persist {baseDir}/../../memory --skip-cron-check"</span></div>
+            </div>
+            <p style="font-size:12px;color:var(--text-3);margin-top:12px;">Change <code style="font-family:var(--font-mono);font-size:11px;background:var(--surface-2);padding:2px 6px;border-radius:3px;color:var(--amber);">0 18</code> to adjust the hour (24h format, UTC).</p>
+          </div>
+          <div class="mode-content" data-mode="manual">
+            <div class="setup-command-label">Add to cron jobs + state.yaml</div>
+            <div class="code-block">
+              <div class="code-header"><span>~/.openclaw/cron/jobs.json</span><span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></span></div>
+              <div class="code-body">{
+  <span class="key">"name"</span>: <span class="val">"Toggle daily digest"</span>,
+  <span class="key">"schedule"</span>: <span class="val">"0 18 * * *"</span>,
+  <span class="key">"message"</span>: <span class="val">"Fetch today's Toggle data and generate my end-of-day digest. Run: python3 {baseDir}/scripts/toggle.py --persist {baseDir}/../../memory --skip-cron-check"</span>
+}</div>
+            </div>
+            <div class="code-block" style="margin-top:10px;">
+              <div class="code-header"><span>state.yaml</span><span><button class="copy-btn" onclick="copyBlock(this)">Copy</button></span></div>
+              <div class="code-body"><span class="key">digest_enabled</span>: <span class="val">true</span>
+<span class="key">digest_time</span>: <span class="val">"18:00"</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. SMART NUDGES -->
+    <div class="setup-card">
+      <div class="setup-card-header">
+        <div class="setup-badge" style="background:rgba(100,140,255,0.1);color:var(--blue);">04</div>
+        <div>
+          <h3>Smart Nudges</h3>
+          <div class="subtitle">Stale project alerts and context-switch warnings. Your agent watches your back.</div>
+        </div>
+        <span class="setup-tag tag-optional">OPTIONAL</span>
+      </div>
+      <div class="setup-card-body">
+        <div class="setup-what">
+          <div class="setup-what-label">Two types of nudges</div>
+          <div class="setup-what-list">
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div><strong style="color:var(--text);">Stale project</strong> — project has 2+ hours invested but no activity in 48h. Your agent pings you before it goes cold.</div>
+            </div>
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div><strong style="color:var(--text);">Focus alert</strong> — 3+ project switches in 30 minutes with focus score below 30. Your agent offers to help you lock in.</div>
+            </div>
+          </div>
+        </div>
+        <div class="setup-example">
+          <div class="setup-example-label">Stale nudge example</div>
+          <div class="example-msg"><button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+            <span class="agent">Claw:</span> <span class="dim">You haven't touched "Landing Page Deploy" in 3 days. Last session: 1.5h on responsive layout. Want me to pull up where you left off?</span>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-3);margin-top:12px;">Activated automatically once auto-sync is running and history builds up. Say "I dropped that" to dismiss a project permanently.</p>
+      </div>
+    </div>
+
+    <!-- 5. PATTERN DETECTION -->
+    <div class="setup-card">
+      <div class="setup-card-header">
+        <div class="setup-badge" style="background:rgba(100,140,255,0.1);color:var(--blue);">05</div>
+        <div>
+          <h3>Pattern Detection</h3>
+          <div class="subtitle">After 7+ days of data, ask your agent what to automate. It scans your history for repeating workflows.</div>
+        </div>
+        <span class="setup-tag tag-optional">NEEDS 7+ DAYS</span>
+      </div>
+      <div class="setup-card-body">
+        <div class="setup-what">
+          <div class="setup-what-label">How it works</div>
+          <div class="setup-what-list">
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Scans 7 days of history for workflows that repeat 3+ times
+            </div>
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Matches project sequences — same tools visited in the same order
+            </div>
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Proposes an automation pipeline — only if the required skills are installed
+            </div>
+          </div>
+        </div>
+        <div class="setup-example">
+          <div class="setup-example-label">Example</div>
+          <div class="example-msg"><button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+            <span class="you">You:</span> What repetitive stuff could you automate for me?<br><br>
+            <span class="agent">Claw:</span> <span class="dim">I noticed you check GitHub PR comments, update Notion, then post in Slack — 4 times this week, ~12 min each. Want me to automate that pipeline?</span>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-3);margin-top:12px;">Requires auto-sync to be running. The longer it runs, the better the pattern detection gets.</p>
+      </div>
+    </div>
+
+    <!-- 6. PREDICTIONS -->
+    <div class="setup-card">
+      <div class="setup-card-header">
+        <div class="setup-badge" style="background:rgba(255,170,0,0.1);color:var(--amber);">06</div>
+        <div>
+          <h3>Predictions</h3>
+          <div class="subtitle">Your agent learns your routines and anticipates what you're about to do next.</div>
+        </div>
+        <span class="setup-tag tag-advanced">NEEDS 5+ DAYS</span>
+      </div>
+      <div class="setup-card-body">
+        <div class="setup-what">
+          <div class="setup-what-label">Three types of predictions</div>
+          <div class="setup-what-list">
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div><strong style="color:var(--text);">Routine prediction</strong> — "It's Tuesday 10 AM — you usually start with PR reviews. Want me to pull up open PRs?"</div>
+            </div>
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div><strong style="color:var(--text);">Next-task prediction</strong> — "You just wrapped PR reviews. You usually hop into Notion next — want me to open your sprint page?"</div>
+            </div>
+            <div class="setup-what-item">
+              <span class="check">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="#00FFB2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div><strong style="color:var(--text);">Session endurance</strong> — "You're 85 minutes into the API integration — around when you usually take a break. Want me to bookmark where you are?"</div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-3);margin-top:16px;">Predictions activate automatically once 5 days of data exist. They self-correct — predictions you ignore get retired silently. Say "stop predicting" to pause for 7 days.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRESETS -->
+<section class="combos" id="presets">
+  <div class="container">
+    <h2>Not sure? Pick a preset.</h2>
+    <p>Four ready-made configurations depending on how much you want your agent to do.</p>
+
+    <div class="combo-grid">
+      <div class="combo-card">
+        <div class="combo-persona">The minimalist</div>
+        <h3>Just Recall</h3>
+        <p>Context when you ask for it. Nothing proactive.</p>
+        <div class="combo-features">
+          <span class="combo-feat on">Recall</span>
+          <span class="combo-feat">Auto-sync</span>
+          <span class="combo-feat">Digest</span>
+          <span class="combo-feat">Nudges</span>
+          <span class="combo-feat">Patterns</span>
+          <span class="combo-feat">Predictions</span>
+        </div>
+        <div class="combo-prompt">
+          <div class="combo-prompt-label">Send this to your Claw</div>
+          <div class="combo-prompt-msg"><button class="copy-btn" onclick="copyBlock(this)">Copy</button>No setup needed — just start asking about your work. Try: "What was I working on today?"</div>
+        </div>
+      </div>
+      <div class="combo-card" style="border-color: rgba(0,255,178,0.2);">
+        <div class="combo-persona">Most users</div>
+        <h3>Daily Driver</h3>
+        <p>Auto-sync + daily digest. Fresh context and a summary every evening.</p>
+        <div class="combo-features">
+          <span class="combo-feat on">Recall</span>
+          <span class="combo-feat on">Auto-sync</span>
+          <span class="combo-feat on">Digest</span>
+          <span class="combo-feat">Nudges</span>
+          <span class="combo-feat">Patterns</span>
+          <span class="combo-feat">Predictions</span>
+        </div>
+        <div class="combo-prompt">
+          <div class="combo-prompt-label">Send this to your Claw</div>
+          <div class="combo-prompt-msg"><button class="copy-btn" onclick="copyBlock(this)">Copy</button>Set up Toggle with hourly auto-sync and a daily digest at 6 PM. Persist all data to memory.</div>
+        </div>
+      </div>
+      <div class="combo-card">
+        <div class="combo-persona">The power user</div>
+        <h3>Full Awareness</h3>
+        <p>Everything proactive — nudges, focus alerts, pattern detection.</p>
+        <div class="combo-features">
+          <span class="combo-feat on">Recall</span>
+          <span class="combo-feat on">Auto-sync</span>
+          <span class="combo-feat on">Digest</span>
+          <span class="combo-feat on">Nudges</span>
+          <span class="combo-feat on">Patterns</span>
+          <span class="combo-feat">Predictions</span>
+        </div>
+        <div class="combo-prompt">
+          <div class="combo-prompt-label">Send this to your Claw</div>
+          <div class="combo-prompt-msg"><button class="copy-btn" onclick="copyBlock(this)">Copy</button>Set up Toggle with hourly auto-sync, daily digest at 6 PM, stale project nudges after 48h, and focus alerts when my score drops below 30. Persist all data to memory.</div>
+        </div>
+      </div>
+      <div class="combo-card">
+        <div class="combo-persona">The believer</div>
+        <h3>Full Autopilot</h3>
+        <p>Everything on. Your agent learns your routines and anticipates what's next.</p>
+        <div class="combo-features">
+          <span class="combo-feat on">Recall</span>
+          <span class="combo-feat on">Auto-sync</span>
+          <span class="combo-feat on">Digest</span>
+          <span class="combo-feat on">Nudges</span>
+          <span class="combo-feat on">Patterns</span>
+          <span class="combo-feat on">Predictions</span>
+        </div>
+        <div class="combo-prompt">
+          <div class="combo-prompt-label">Send this to your Claw</div>
+          <div class="combo-prompt-msg"><button class="copy-btn" onclick="copyBlock(this)">Copy</button>Set up Toggle with everything enabled: hourly auto-sync, daily digest at 6 PM, stale project nudges after 48h, focus alerts below 30, pattern detection after 7 days, and predictive suggestions after 5 days. Persist all data to memory.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SETTINGS REFERENCE -->
+<section class="settings-ref" id="reference">
+  <div class="container">
+    <h2>Settings reference</h2>
+    <p>All of these are adjustable. Tell your agent to change any setting, or edit state.yaml directly.</p>
+
+    <table class="settings-table">
+      <tr>
+        <th>Setting</th>
+        <th>Default</th>
+        <th>What it controls</th>
+      </tr>
+      <tr>
+        <td>digest_time</td>
+        <td>"18:00"</td>
+        <td>When the daily digest fires. 24h format.</td>
+      </tr>
+      <tr>
+        <td>nudge_stale_hours</td>
+        <td>48</td>
+        <td>Hours of inactivity before a project is flagged as stale.</td>
+      </tr>
+      <tr>
+        <td>focus_alert_threshold</td>
+        <td>30</td>
+        <td>Focus score below this triggers a context-switch alert.</td>
+      </tr>
+      <tr>
+        <td>focus_alert_window_min</td>
+        <td>20</td>
+        <td>Minutes of scattered behavior before alerting.</td>
+      </tr>
+      <tr>
+        <td>pattern_detection_days</td>
+        <td>7</td>
+        <td>Days of history scanned for repeating workflows.</td>
+      </tr>
+      <tr>
+        <td>pattern_min_occurrences</td>
+        <td>3</td>
+        <td>How many times a workflow must repeat before suggesting automation.</td>
+      </tr>
+      <tr>
+        <td>prediction_min_days</td>
+        <td>5</td>
+        <td>Minimum days of data before predictions activate.</td>
+      </tr>
+      <tr>
+        <td>prediction_confidence_min</td>
+        <td>3</td>
+        <td>Minimum occurrences of a routine before it becomes a prediction.</td>
+      </tr>
+      <tr>
+        <td>timezone</td>
+        <td>null</td>
+        <td>Your local timezone. Set once — used for all timestamps and scheduling.</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">© 2026 TOGGLE PRO</div>
+    <div class="footer-links">
+      <a href="https://x.toggle.pro">Dashboard</a>
+      <a href="landing-v2.html">Home</a>
+      <a href="#">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function setMode(mode) {
+  // Update buttons
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === mode);
+  });
+  // Show/hide content
+  document.querySelectorAll('.mode-content').forEach(el => {
+    el.classList.toggle('visible', el.dataset.mode === mode);
+  });
+}
+
+function copyBlock(btn) {
+  const codeBlock = btn.closest('.code-block');
+  const exampleMsg = btn.closest('.example-msg');
+  const comboMsg = btn.closest('.combo-prompt-msg');
+  
+  let text = '';
+  
+  if (codeBlock) {
+    text = codeBlock.querySelector('.code-body').innerText.trim();
+  } else if (comboMsg) {
+    text = Array.from(comboMsg.childNodes)
+      .filter(n => !n.classList || !n.classList.contains('copy-btn'))
+      .map(n => n.textContent).join('').trim();
+  } else if (exampleMsg) {
+    const full = exampleMsg.innerText.replace('Copy', '').trim();
+    const youLine = full.match(/^You:\s*(.+?)(?:\n|$)/);
+    text = youLine ? youLine[1].trim() : full;
+  }
+  
+  if (!text) return;
+  
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.dataset.copied = 'true';
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.dataset.copied = '';
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
